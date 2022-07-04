@@ -8,9 +8,9 @@ const generateId = require('./lib/generate-id');
 
 var redis = require("redis"),
   client = redis.createClient({
-    host: 'redis',
+    host: process.env.REDIS_URL,
     port: 6379
-  });
+});
 
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: true }));
