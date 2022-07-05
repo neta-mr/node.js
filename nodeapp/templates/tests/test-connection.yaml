@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "nodeapp.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ .Values.tests.app.host }}']
   restartPolicy: Never
