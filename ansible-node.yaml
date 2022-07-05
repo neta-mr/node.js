@@ -1,0 +1,36 @@
+- name: Test and build node app
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Tear down existing services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        state: absent
+
+    - name: Unit Tests
+      command: docker-compose --profile test --project-directory ./app up --exit-code-from test
+      register: output
+
+    - assert:
+        that:
+          - output.rc == 0
+
+    - name: Create and start services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        build: yes
+        services:
+          - app
+      register: output
+  
+    - assert:
+        that:
+          - "app.app_app_1.state.running"
+          - "redis.app_redis_1.state.running"
+
+    - name: Stop all services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        stopped: yes
+        remove_orphans: yes
+      register: output
