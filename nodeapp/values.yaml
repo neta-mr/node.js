@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  # repository: trydocker123/node-app
+  # repository: trydocker123/nodeapp:1.0.0
   repository: docker.io/library/node-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.

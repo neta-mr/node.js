@@ -8,8 +8,11 @@
         state: absent
 
     - name: Unit Tests
-      command: docker-compose --profile test --project-directory ./app up --exit-code-from test
+      command: docker-compose --profile test --project-directory ./app run test
       register: output
+
+    - debug: 
+        var: output.stdout_lines
 
     - assert:
         that:
@@ -27,6 +30,32 @@
         that:
           - "app.app_app_1.state.running"
           - "redis.app_redis_1.state.running"
+
+    - name: Check that you can connect (GET) to the app and it returns a status 200
+      uri:
+        url: http://localhost:8081
+        method: GET
+      register: output
+
+    - debug: 
+        msg: return status {{ output.status }}
+
+    - name: Push app to DockerHub registry
+      docker_image:
+        name: nodeapp
+        repository: trydocker123/nodeapp
+        tag: 1.0.0
+        force_tag: yes
+        push: yes
+        source: local
+
+    - name: Add tag latest to image ans push it 
+      docker_image:
+        name: nodeapp:1.0.0
+        repository: trydocker123/nodeapp:latest
+        force_tag: yes
+        push: yes
+        source: local
 
     - name: Stop all services
       docker_compose:
