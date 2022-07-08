@@ -40,19 +40,11 @@
     - debug: 
         msg: return status {{ output.status }}
 
-    - name: Push app to DockerHub registry
+    - name: Add tag latest to image ans push it to DockerHub
       docker_image:
         name: nodeapp
         repository: trydocker123/nodeapp
-        tag: 1.0.0
-        force_tag: yes
-        push: yes
-        source: local
-
-    - name: Add tag latest to image ans push it 
-      docker_image:
-        name: nodeapp:1.0.0
-        repository: trydocker123/nodeapp:latest
+        tag: latest
         force_tag: yes
         push: yes
         source: local

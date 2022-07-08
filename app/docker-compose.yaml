@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile.prod
-    image: nodeapp:1.0.0
+    image: nodeapp:latest
     depends_on:
       - redis
     environment:
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile.test
-    image: nodetest:1.0.0
+    image: nodetest:latest
     depends_on:
       - redis
     environment:
