@@ -1,0 +1,7 @@
+FROM node:8.4.0
+
+WORKDIR /usr/node/pizza-express
+COPY pizza-express/ .
+RUN npm install
+
+CMD [ "npm", "test" ]

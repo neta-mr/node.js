@@ -1,0 +1,57 @@
+- name: Test and build node app
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Tear down existing services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        state: absent
+
+    - name: Unit Tests
+      command: docker-compose --profile test --project-directory ./app run test
+      register: output
+
+    - debug: 
+        var: output.stdout_lines
+
+    - assert:
+        that:
+          - output.rc == 0
+
+    - name: Create and start services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        build: yes
+        services:
+          - app
+      register: output
+  
+    - assert:
+        that:
+          - "app.app_app_1.state.running"
+          - "redis.app_redis_1.state.running"
+
+    - name: Check that you can connect (GET) to the app and it returns a status 200
+      uri:
+        url: http://localhost:8081
+        method: GET
+      register: output
+
+    - debug: 
+        msg: return status {{ output.status }}
+
+    - name: Add tag latest to image ans push it to DockerHub
+      docker_image:
+        name: nodeapp
+        repository: trydocker123/nodeapp
+        tag: latest
+        force_tag: yes
+        push: yes
+        source: local
+
+    - name: Stop all services
+      docker_compose:
+        project_src: "{{ playbook_dir }}/app"
+        stopped: yes
+        remove_orphans: yes
+      register: output
