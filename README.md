@@ -40,3 +40,7 @@ Uninstall the app by runnig:\
 
 I used ELK as centralized log system.\
 Filebeat -> logstash -> elasticsearch -> kibana.
+
+For kibana access:\
+Modify `/etc/hosts` (add `<ip> kibana.local`)\
+for the right ip you can run `kubectl get ingress --watch`
