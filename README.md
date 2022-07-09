@@ -2,6 +2,7 @@
 
 [Step-3](#Step-3)  
 [Step-2](#Step-2)  
+[Bonus](#Bonus)
 
 ## Step-3
 
@@ -34,3 +35,10 @@ run `curl http://node-app.local`
 
 Uninstall the app by runnig:\
 `helm uninstall node-app-chart`
+
+## Bonus
+
+I used ELK as centralized log system.
+Filebeat -> logstash -> elasticsearch -> kibana.
+
+The Bonus is on `bonus/logging` branch.
