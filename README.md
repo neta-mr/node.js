@@ -40,5 +40,3 @@ Uninstall the app by runnig:\
 
 I used ELK as centralized log system.\
 Filebeat -> logstash -> elasticsearch -> kibana.
-
-The Bonus is on `bonus/logging` branch.
